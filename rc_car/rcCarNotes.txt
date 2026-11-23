@@ -1,0 +1,21 @@
+scp year1999@192.168.29.184:/Users/year1999/Documents/GitHub/youtube/rc_car/build/transmitter/transmitter.ino.hex year1999@192.168.29.184:/Users/year1999/Documents/GitHub/youtube/rc_car/build/receiver/receiver.ino.hex ~/
+
+arduino-cli compile --fqbn arduino:avr:nano --output-dir ./build/transmitter ./transmitter
+arduino-cli compile --fqbn arduino:avr:nano --output-dir ./build/receiver ./receiver
+
+arduino-cli upload -p /dev/ttyUSB0 --fqbn arduino:avr:nano --input-file ./transmitter.ino.hex
+
+falback:
+arduino-cli upload -p /dev/ttyUSB0 --fqbn arduino:avr:nano:cpu=atmega328old --input-file ./transmitter.ino.hex
+
+arduino-cli upload -p /dev/ttyUSB0 --fqbn arduino:avr:nano --input-file ./receiver.ino.hex
+
+
+ps aux | grep -E 'screen|arduino-cli|avrdude'
+
+
+lsof /dev/ttyUSB0
+kill -9 115890
+
+screen -L /dev/ttyUSB0 9600
+
